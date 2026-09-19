@@ -5,7 +5,7 @@ class TestHTMLNode(unittest.TestCase):
     def test_eq(self):
         node = HTMLNode(props={"class": "link"})
         result = node.props_to_html()
-        self.assertEqual(result, 'class="link"')
+        self.assertEqual(result, ' class="link"')
 
     def test_not_eq(self):
         expected = HTMLNode(props={"class": "link"})
