@@ -25,7 +25,11 @@ class TextNode:
     def __eq__(self, other):
         if not isinstance(other, TextNode):
             return NotImplemented
-        return (self.text == other.text and self.text_type == other.text_type and self.url == other.url)
+        return (
+            self.text == other.text
+            and self.text_type == other.text_type
+            and self.url == other.url
+        )
 
 
 def text_node_to_html_node(text_node: TextNode) -> LeafNode:
