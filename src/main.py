@@ -1,9 +1,30 @@
-from textnode import TextNode, TextType
+import os
+import shutil
+
+
+def copy_static_to_public(src: str, dest: str):
+    if not os.path.exists(dest):
+        os.mkdir(dest)
+
+    for item in os.listdir(src):
+        src_path = os.path.join(src, item)
+        dest_path = os.path.join(dest, item)
+
+        if os.path.isfile(src_path):
+            print(f"Copying: {src_path} -> {dest_path}")
+            shutil.copy(src_path, dest_path)
+
+        elif os.path.isdir(src_path):
+            os.mkdir(dest_path)
+            copy_static_to_public(src_path, dest_path)
+
 
 def main():
-    node1 = TextNode("Hello, World!", TextType.PLAIN_TEXT)
-    node2 = TextNode("Hello, World!", TextType.PLAIN_TEXT)
-    print(node1 == node2)
-    print(node1)
+    if os.path.exists("public"):
+        shutil.rmtree("public")
 
-main()
+    copy_static_to_public("static", "public")
+
+
+if __name__ == "__main__":
+    main()
