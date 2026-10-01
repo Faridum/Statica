@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from generate_page import generate_page
+
 
 def copy_static_to_public(src: str, dest: str):
     if not os.path.exists(dest):
@@ -24,6 +26,12 @@ def main():
         shutil.rmtree("public")
 
     copy_static_to_public("static", "public")
+
+    generate_page(
+        "content/index.md",
+        "template.html",
+        "public/index.html",
+    )
 
 
 if __name__ == "__main__":
