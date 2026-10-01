@@ -21,16 +21,43 @@ def copy_static_to_public(src: str, dest: str):
             copy_static_to_public(src_path, dest_path)
 
 
+def generate_pages_recursive(
+    dir_path_content: str,
+    template_path: str,
+    dest_dir_path: str,
+):
+    for item in os.listdir(dir_path_content):
+        content_path = os.path.join(dir_path_content, item)
+        dest_path = os.path.join(dest_dir_path, item)
+
+        if os.path.isfile(content_path):
+            if content_path.endswith(".md"):
+                dest_path = dest_path.replace(".md", ".html")
+
+                generate_page(
+                    content_path,
+                    template_path,
+                    dest_path,
+                )
+
+        elif os.path.isdir(content_path):
+            generate_pages_recursive(
+                content_path,
+                template_path,
+                dest_path,
+            )
+
+
 def main():
     if os.path.exists("public"):
         shutil.rmtree("public")
 
     copy_static_to_public("static", "public")
 
-    generate_page(
-        "content/index.md",
+    generate_pages_recursive(
+        "content",
         "template.html",
-        "public/index.html",
+        "public",
     )
 
 
