@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 from generate_page import generate_page
 
@@ -25,6 +26,7 @@ def generate_pages_recursive(
     dir_path_content: str,
     template_path: str,
     dest_dir_path: str,
+    basepath: str,
 ):
     for item in os.listdir(dir_path_content):
         content_path = os.path.join(dir_path_content, item)
@@ -38,6 +40,7 @@ def generate_pages_recursive(
                     content_path,
                     template_path,
                     dest_path,
+                    basepath,
                 )
 
         elif os.path.isdir(content_path):
@@ -45,19 +48,23 @@ def generate_pages_recursive(
                 content_path,
                 template_path,
                 dest_path,
+                basepath,
             )
 
 
 def main():
-    if os.path.exists("public"):
-        shutil.rmtree("public")
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
-    copy_static_to_public("static", "public")
+    if os.path.exists("docs"):
+        shutil.rmtree("docs")
+
+    copy_static_to_public("static", "docs")
 
     generate_pages_recursive(
         "content",
         "template.html",
-        "public",
+        "docs",
+        basepath,
     )
 
 

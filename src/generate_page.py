@@ -11,7 +11,7 @@ def extract_title(markdown: str) -> str:
     raise ValueError("No h1 header found")
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str):
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str,):
     print(
         f"Generating page from {from_path} to {dest_path} "
         f"using {template_path}"
@@ -28,7 +28,9 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
 
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}", html)
-
+    template = template.replace('href="/', f'href="{basepath}')
+    template = template.replace('src="/', f'src="{basepath}')
+    
     dest_dir = os.path.dirname(dest_path)
 
     if dest_dir:
